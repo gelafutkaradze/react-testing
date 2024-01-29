@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 export const App = () => {
   const [users, setUsers] = useState([]);
+  const [checked, setChecked] = useState([]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -18,13 +19,27 @@ export const App = () => {
     getUsers();
   }, []);
 
-  // const onChangeCheckBoxEvent = (e, index) => {
-  //   console.log(e, index);
-  // };
+  const handleCheckboxChange = (user) => {
+    setChecked((prevChecked) =>
+      prevChecked.includes(user)
+        ? prevChecked.filter((id) => id !== user)
+        : [...prevChecked, user]
+    );
+  };
+
+  const handleShowSelected = () => {
+    console.log(
+      "Selected Users:",
+      checked.map((user) => user)
+    );
+  };
 
   return (
     <>
       <div className="container">
+        <div className="btn-parent">
+          <button onClick={handleShowSelected}>Show Selected</button>
+        </div>
         <p>ALL(10)</p>
         <div className="title-parent">
           <input type="checkbox" />
@@ -40,11 +55,9 @@ export const App = () => {
             <div className="checkbox-parent">
               <input
                 type="checkbox"
-                onChange={(e, index) => {
-                  e.target.value;
-                  console.log(user);
-                }}
-              ></input>
+                onChange={() => handleCheckboxChange(user)}
+                checked={checked.includes(user)}
+              />
             </div>
             <div>
               <div className="username">{user.username}</div>
